@@ -3,6 +3,10 @@ Named after Margit Wigner, wife of Paul Dirac, this package wish to make it easi
 
 ### Example 
 ```bash 
+ # Ensure the envionment is setup
+ lb-dirac
+ lhcb-proxy-init
+
  # Define the job
  $ echo "ls -lrt" > test.sh
 
