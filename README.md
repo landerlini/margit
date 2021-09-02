@@ -65,3 +65,17 @@ To know more about one of the templates
 ### Integrating with other DAG tools (such as snakemake)
 In preparation... 
 
+
+# Limitations and known bugs
+`margit` is NOT a replacement for ganga. 
+
+`margit` ignores everything related to data management, especially for what 
+concerns input data. 
+Indeed, `margit` is intended to ease the usage of Dirac for HPC jobs where data 
+can be accessed remotely because data access (network) is expected to represent
+a negligible fraction of the computational cost. 
+For HTC applications of the grid, plase use ganga. 
+
+The installation of `conda` fails on several Computing Elements because uneven
+environment configuration. We currently restrict submissions to CNAF.
+
