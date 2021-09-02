@@ -1,6 +1,16 @@
 # margit
 Named after Margit Wigner, wife of Paul Dirac, this package wish to make it easier to interact with LHCb Dirac
 
+> As usual, Margit and Hofer chatted convivially while the 
+  frail Dirac sat motionless in his favourite old chair, occasionally looking 
+  through the glass sliding doors of the garden. For the first half an hour or 
+  so of the conversation, he was, as usual, mute but came vibrantly to life when
+  Margit happened to mention his distant French ancestors. Dirac corrected one of 
+  Margit historical's facts and began to speak [...] talking fluently in his quiet,
+  clear voice. 
+
+From *The Strangest Man: The Hidden Life of Paul Dirac, Quantum Genius*. 
+
 ### Example 
 Let's start with an hello world
 
