@@ -24,7 +24,6 @@ setup (
     "Operating System :: OS Independent",
   ],
   install_requires = [
-      "numpy", 
       "PyYAML>=5.3.1", 
       "wheel",
       ],
