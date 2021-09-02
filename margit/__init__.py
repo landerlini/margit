@@ -1,4 +1,5 @@
 import sys 
+import os.path
 from functools import wraps
 
 import margit.core
@@ -9,6 +10,12 @@ def cli_command (f):
   global cli_commands 
   cli_commands [f.__name__] = f
 
+
+subpilot = os.path.join(
+    os.path.split (os.path.abspath(__file__))[0],
+    "subpilot.sh"
+    )
+templates = os.path.join(os.path.split(__file__)[0], "templates")
 
 from margit.template import template
 from margit.submit import submit

@@ -1,0 +1,18 @@
+####################            MARGIT JOB TEMPLATE         ###################
+## submit with: margit submit <thisfile>.yaml 
+
+#------------------------------------------------------------------------------
+JobName: %(jobname)s 
+Executable: %(executable)s 
+#------------------------------------------------------------------------------
+
+LogLevel: %(logLevel)s
+
+InputSandBox: %(inputSB)s
+
+OutputSandBox: %(outputSB)s
+
+Setup: 
+
+Command: {argument}
+

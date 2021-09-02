@@ -2,24 +2,66 @@
 Named after Margit Wigner, wife of Paul Dirac, this package wish to make it easier to interact with LHCb Dirac
 
 ### Example 
+Let's start with an hello world
+
 ```bash 
  # Ensure the envionment is setup
  lb-dirac
  lhcb-proxy-init
 
+ # Install margit
+ $ pip install --user git+https://github.com/landerlini/margit
+
  # Define the job
  $ echo "ls -lrt" > test.sh
 
- # Create the job template
- $ margit template test.sh > test.template
-
- # Submit the two copied from this template as jobs
- $ margit submit test.template -n 2 > test.job
+ # Submit the two copied from test.sh as jobs
+ $ margit submit -n 2 test.sh > test.job
 
  # Inspect the status of the job
  $ margit inspect test.job
 
  # Peek the stdout of test.sh as run remotely
  $ margit peek test.job 
-
 ```
+
+### Template
+Some templated configuration can be used for more 
+advanced usages, for example, here is an example 
+for sending a job requiring tensorflow2
+
+```bash 
+ # Create your python file
+ $ nano script.py
+
+ # Launch the script through dirac using the tensorflow template
+ $ margit submit -t tensorflow script.py > test.job
+```
+
+The environment can be customized, by cloning an existing 
+template and modifying the library versions and similars
+```bash 
+ # Get the template 
+ $ margit template tensorflow > mytensorflow.template
+
+ # Edit the configuration of the libraries
+ $ nano mytensorflow.template
+
+ # Launch the script through dirac using the modified template
+ $ margit submit -t mytensorflow.template script.py > test.job
+```
+
+To list the available default templates
+```bash
+ $ margit template ls
+```
+
+To know more about one of the templates
+```bash
+ $ margit template <template_name> --docs
+```
+
+
+### Integrating with other DAG tools (such as snakemake)
+In preparation... 
+

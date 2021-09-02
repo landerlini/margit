@@ -1,0 +1,16 @@
+#------------------------------------------------------------------------------
+JobName: PythonJob
+Docs: |
+  Sumbit a plain Python script file. 
+
+  Usage: margit submit -t python <your_script>.py
+#------------------------------------------------------------------------------
+
+InputSandBox: 
+  - "{argument}"
+
+OutputSandBox: []
+  
+Command: python {argument}
+
+

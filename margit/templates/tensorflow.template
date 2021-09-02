@@ -1,0 +1,33 @@
+#------------------------------------------------------------------------------
+JobName: TensorflowJob
+Docs: |
+  Install conda on the remote server and use it to initialize tensorflow
+
+  Usage: margit submit -t tensorflow <your_script>.py
+#------------------------------------------------------------------------------
+
+InputSandBox: 
+  - "{argument}"
+
+OutputSandBox: 
+  - output.log
+
+Executable: "{margittemplates}/conda.sh"
+
+  
+Command: python {argument}
+
+Setup: |
+
+  conda install --quiet python=3.8.8 
+
+  conda install --quiet pandas numpy scikit-learn git tensorflow 
+  conda install --quiet -c conda-forge uproot
+
+  pip install --quiet snakemake scikinC scipy==1.4.1 tensorflow
+
+  pip freeze >> output.log
+  git --version >> output.log
+
+
+
