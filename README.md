@@ -23,7 +23,7 @@ Let's start with an hello world
  $ pip install --user git+https://github.com/landerlini/margit
 
  # Update PATH (in principle not necessary, but lb-dirac environment likes it)
- $ export PATH=$HOME/.local/bin
+ $ export PATH=$HOME/.local/bin:$PATH
 
  # Define the job
  $ echo "ls -lrt" > test.sh
