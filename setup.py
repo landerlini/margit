@@ -16,7 +16,7 @@ setup (
   url = 'https://github.com/landerlini/margit',
   packages = setuptools.find_packages(),
   include_package_data=True,
-  package_data={'': ['margit/templates/*.*', 'margit/*.sh']},
+  package_data={'': ['templates/*.*', '*.sh']},
   scripts = glob("scripts/*"), 
   classifiers = [
     "Programmin Language :: Python :: 3"
