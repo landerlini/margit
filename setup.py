@@ -15,7 +15,7 @@ setup (
   author_email = 'Lucio.Anderlini@cern.ch',
   url = 'https://github.com/landerlini/margit',
   packages = setuptools.find_packages(),
-  include_package_data=False,
+  include_package_data=True,
   package_data={'margit': ['templates/*.*', '*.sh']},
   scripts = glob("scripts/*"), 
   classifiers = [
