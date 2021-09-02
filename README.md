@@ -9,7 +9,7 @@ Named after Margit Wigner, wife of Paul Dirac, this package wish to make it easi
   Margit historical's facts and began to speak [...] talking fluently in his quiet,
   clear voice. 
 
-From *The Strangest Man: The Hidden Life of Paul Dirac, Quantum Genius*. 
+From *The Strangest Man: The Hidden Life of Paul Dirac, Quantum Genius*, by G. Farmelo. 
 
 ### Example 
 Let's start with an hello world
@@ -21,6 +21,9 @@ Let's start with an hello world
 
  # Install margit
  $ pip install --user git+https://github.com/landerlini/margit
+
+ # Update PATH (in principle not necessary, but lb-dirac environment likes it)
+ $ export PATH=$HOME/.local/bin
 
  # Define the job
  $ echo "ls -lrt" > test.sh
@@ -89,3 +92,4 @@ For HTC applications of the grid, plase use ganga.
 The installation of `conda` fails on several Computing Elements because uneven
 environment configuration. We currently restrict submissions to CNAF.
 
+Setup and in general, distribution, is incomplete.
