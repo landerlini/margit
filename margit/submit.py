@@ -99,4 +99,7 @@ def submit(args):
             if nActive == 0:
                 break
 
-    print (yaml.dump({status: statuses.count(status) for status in set(statuses)}), file=sys.stderr)
+        try:
+          print (yaml.dump({status: statuses.count(status) for status in set(statuses)}), file=sys.stderr)
+        except Exception:
+          pass 

@@ -15,6 +15,7 @@ def peek(args):
     "Retrieve the output sandbox from a file and displays its stdout"
     parser = ArgumentParser(usage="margit inspect <arguments>")
     parser.add_argument("jobdesc", nargs='+', help="Executable file to submit")
+    parser.add_argument("--outputdir", "-o", help="Scratch dir for the output", default='.')
 
     args = parser.parse_args(args)
 
@@ -27,8 +28,8 @@ def peek(args):
         continue
       
       for jobid in j['JobID']:
-        margit.core.get_dirac().getOutputSandbox(jobid, outputDir="/tmp")
-        with open(f"/tmp/{jobid}/Script1_{os.path.basename(j['Executable'])}.log") as stdout:
+        margit.core.get_dirac().getOutputSandbox(jobid, outputDir=args.outputdir)
+        with open(os.path.join(args.outputdir, f"{jobid}/Script1_{os.path.basename(j['Executable'])}.log")) as stdout:
           print (stdout.read())
 
     
