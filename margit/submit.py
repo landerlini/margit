@@ -11,6 +11,7 @@ import os.path
 from glob import glob
 from threading import Thread
 import time
+import shutil
 
 
 @margit.cli_command
@@ -29,9 +30,32 @@ def submit(args):
     submission_mode.add_argument("--local", "-L", action='store_true',
                                  help="Submit the job to local")
     submission_mode.add_argument("--wait", "-w", type=int, default=None,
-                                 help="Submit the job to DIRAC, but blocks until it ends")
+        help="Submit the job to DIRAC, but blocks until it ends or after n seconds (0 waits forever)")
+    parser.add_argument("--scratchdir", "-d", default=".margit-scratch",
+        help="Scratch area to download jobs from DIRAC")
+    parser.add_argument("--input", "-i", nargs='*', default=[],
+        help="<source_path>:<sandbox_file> Partial copy of input files to the the input sandbox")
+    parser.add_argument("--output", "-o", nargs='*', default=[],
+        help="<sandbox_file>:<dest_path> Partial copy of the output sandbox to a given location")
 
     args = parser.parse_args(args)
+    if len(args.output) and args.wait is None:
+      if any([':' not in a for a in args.output]):
+        raise ValueError("--output format must be <sandbox_file>:<dest_path>")
+      args.wait = 0
+
+    inputs = {s.split(':')[0]:s.split(':')[1] for s in args.input}
+    outputs = {s.split(':')[0]:s.split(':')[1] for s in args.output}
+
+    ## Builds the name for the scratch dir
+    if os.path.exists(args.scratchdir):
+      bundle_path = os.path.join(args.scratchdir,
+          "_".join([".margit-scratch", margit.utils.get_random_string()])
+          )
+    else:
+      bundle_path = "_".join([args.scratchdir, margit.utils.get_random_string()])
+    ######
+
     template = get_template(args.template)
 
     cfg_dict = dict(
@@ -59,20 +83,34 @@ def submit(args):
 
     inputSB = [f.format(**cfg_dict)
                for f in template['InputSandBox']]
+
+    if len(inputs):
+      os.mkdir (bundle_path)
+      bundled_files = [os.path.join(bundle_path, i) for i in inputs.values()]
+      inputSB = list(set(inputSB + bundled_files))
+      for path_from, file_to in inputs.items():
+        shutil.copy2(path_from, os.path.join(bundle_path, file_to))
+
     if len(inputSB):
         job.setInputSandbox(inputSB)
 
-    if len(template['OutputSandBox']):
-        job.setOutputSandbox(template['OutputSandBox'])
+
+    outputSB = list(set(template['OutputSandBox'] + list(outputs.keys())))
+    if len(outputSB):
+        job.setOutputSandbox(outputSB)
 
     if args.local:
         job.runLocal(margit.core.get_dirac())
         return
 
     ids = []
-    for iJob in range(args.njobs):
-        job.setDIRACPlatform()
-        ids.append(margit.core.get_dirac().submitJob(job)['JobID'])
+    try:
+      for iJob in range(args.njobs):
+          job.setDIRACPlatform()
+          ids.append(margit.core.get_dirac().submitJob(job)['JobID'])
+    finally:
+      if len(inputs): 
+        shutil.rmtree(bundle_path)
 
     print("#"*80)
     print(yaml.dump({
@@ -91,13 +129,27 @@ def submit(args):
             nActive = len([s for s in statuses if s not in deadStatus])
             if nActive:
               if not args.quiet:
-                print(f"Waiting for {nActive} to complete. Status of jobs: ", ", ".join(set(statuses)), file=sys.stderr)
-            if time.time() - t0 > args.wait:
+                print(f"Waiting for up to {nActive} job(s) to complete. Status of jobs: ", ", ".join(set(statuses)), file=sys.stderr)
+            if args.wait != 0 and time.time() - t0 > args.wait:
                 raise ConnectionError(
                     "Timeout, increase wait time (-w, --wait)")
 
             if nActive == 0:
                 break
+
+        if nActive == 0 and len(args.output):
+
+          os.mkdir (bundle_path)
+          try:
+            for iJob, jobid in enumerate(ids, 1):
+              margit.core.get_dirac().getOutputSandbox(jobid, outputDir=args.scratchdir)
+              for file_from, path_to in outputs.items():
+                print (f"{file_from}  ->  {path_to}")
+                modified_path_to = path_to + f".{iJob}" if len(ids) > 1 else path_to
+                shutil.copy2(os.path.join(args.scratchdir, str(jobid), file_from), modified_path_to)
+          finally:
+            print (f"Removing {args.scratchdir}")
+            shutil.rmtree(bundle_path)
 
         try:
           print (yaml.dump({status: statuses.count(status) for status in set(statuses)}), file=sys.stderr)

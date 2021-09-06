@@ -75,8 +75,45 @@ To know more about one of the templates
 ```
 
 
-### Integrating with other DAG tools (such as snakemake)
-In preparation... 
+### Integrating with DAG tools (such as snakemake)
+A brutal approach to integrate Dirac with DAG tools is to create idling jobs
+on the local machine that simply wait for the remote job to end to download 
+the output as if it was their own. 
+This approach makes it possible to combine local and remote jobs, for example 
+data reduction can be offloaded to Dirac while the training of some 
+machine learning algorithm can be performed locally using hardware accelerators. 
+
+In order to let margit wait for Dirac to complete, and then downloading its 
+output you can issue the following command
+```
+ $ margit submit [-t ...] script.py \
+    --input \
+    <path_file1>:<file1_name_in_sandbox> 
+    [<path_file2>:<file2_name_in_sandbox> ...] 
+    --output \ 
+    <output_file1_in_sandbox>:<local_filepath> 
+    [<output_file2_in_sandbox>:<local_filepath> ...]
+```
+if you wish you can also specify a timeout in seconds through the `--wait`
+argument. 
+
+For example, the following command
+```
+ $ margit submit helloworld.sh -i /tmp/myfile.dat:input.txt -o output.txt:/tmp/output.dat -w 3600
+```
+submits the script helloworld through DIRAC, it copies an inputs text file
+from the local `tmp` folder to the remote job through the sandbox, waits up to 
+one hour for the job to be accepted and finish and finally it, upon success, it copies
+the job output file `output.txt` back to the local `tmp`, modifying the extension to `dat`. 
+
+Using this interface you can configure snakemake (or other tools) to wait for the output 
+file to be generated in a specific location before passing it as an input to some subsequent
+job.
+
+
+
+
+
 
 
 # Limitations and known bugs

@@ -2,14 +2,17 @@ import margit
 import os.path
 import yaml
 
+import string
+import random
+
 __DEFAULT = {
     'JobName': 'MargitJob',
     'Executable': margit.subpilot,
     'LogLevel': 'info',
-    'InputSandBox': [],
+    'InputSandBox': ['{argument}'],
     'OutputSandBox': [],
     'Setup': "",
-    'Command': '{argument}'
+    'Command': './{argument}'
 }
 
 
@@ -30,3 +33,8 @@ def get_template (tname):
       raise RuntimeError (f"Unexpected template definition {tname}")
 
     return template
+
+
+def get_random_string (length=12):
+  chars = string.ascii_letters + string.digits
+  return "".join([random.choice(chars) for i in range(8)])
