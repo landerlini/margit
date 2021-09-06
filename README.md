@@ -88,10 +88,10 @@ output you can issue the following command
 ```
  $ margit submit [-t ...] script.py \
     --input \
-    <path_file1>:<file1_name_in_sandbox> 
-    [<path_file2>:<file2_name_in_sandbox> ...] 
+    <path_file1>:<file1_name_in_sandbox> \
+    [<path_file2>:<file2_name_in_sandbox> ...] \
     --output \ 
-    <output_file1_in_sandbox>:<local_filepath> 
+    <output_file1_in_sandbox>:<local_filepath> \
     [<output_file2_in_sandbox>:<local_filepath> ...]
 ```
 if you wish you can also specify a timeout in seconds through the `--wait`
