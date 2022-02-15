@@ -1,0 +1,31 @@
+###
+JobName: LamarrJob
+###
+
+RequireExecutable: False
+
+Options:
+  EvtMax: 100
+
+Docs: |
+  Sumbit a Lamarr job given a single configurable option file
+  Usage: margit submit -t python <your_script>.py
+
+LogLevel: info
+
+Setup: |
+  chmod +x lamarr.sh
+
+Command: "./lamarr.sh {argument} {EvtMax}"
+
+InputSandBox:
+  - '{argument}'
+  - '{margittemplates}/lamarr.sh'
+
+#OutputSandBox: 
+#  - output.xsim
+
+OutputData:
+  - output.xsim
+
+
