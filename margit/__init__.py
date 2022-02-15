@@ -20,6 +20,7 @@ templates = os.path.join(os.path.split(__file__)[0], "templates")
 from margit.template import template
 from margit.submit import submit
 from margit.inspect import inspect
+from margit.data import data
 from margit.peek import peek
 
   

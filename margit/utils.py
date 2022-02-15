@@ -12,7 +12,10 @@ __DEFAULT = {
     'InputSandBox': ['{argument}'],
     'OutputSandBox': [],
     'Setup': "",
-    'Command': './{argument}'
+    'Command': './{argument}',
+    'RequireExecutable': True,
+    'Options': {},
+    'OutputData': [],
 }
 
 
