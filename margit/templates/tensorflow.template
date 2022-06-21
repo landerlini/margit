@@ -8,11 +8,15 @@ Docs: |
 
 InputSandBox: 
   - "{argument}"
+  - '{margittemplates}/conda.sh'
 
 OutputSandBox: 
   - output.log
 
 Executable: "{margittemplates}/conda.sh"
+
+Tags:
+ - GPU
 
   
 Command: python {argument}

@@ -113,8 +113,17 @@ def submit(args):
 
     command = template['Command'].format(**cfg_dict)
 
-    job.setDestination("LCG.CNAF.it")
+    if 'Destination' in template.keys():
+      job.setDestination(template['Destination'])
+
+    if 'DestinationCE' in template.keys():
+      job.setDestinationCE(template['DestinationCE'])
+
     job.setLogLevel(template['LogLevel'])
+
+    if 'Tags' in template.keys():
+      job.setTag(template['Tags'])
+
 
     inputSB = [f.format(**cfg_dict)
                for f in template['InputSandBox']]
